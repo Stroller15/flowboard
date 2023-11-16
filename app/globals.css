@@ -5,5 +5,13 @@
 html,
 body,
 #root {
-  @apply bg-black text-white
+  @apply bg-black text-white box-border
+}
+
+.bg-buttonBackgroundColor {
+  background-color: #282C35;
+}
+
+.border-color {
+  
 }
