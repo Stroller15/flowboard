@@ -5,6 +5,5 @@
 html,
 body,
 #root {
-  background-image: linear-gradient(to right, #4A5568, #1A202C, #000000);
-  color: white;
+  @apply bg-black text-white
 }
