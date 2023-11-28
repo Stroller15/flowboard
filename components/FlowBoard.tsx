@@ -1,12 +1,16 @@
 "use client"
 
 import PlusIcon from "@/assets/PlusIcon"
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Column, Id } from "@/types";
 import ColumnContainer from "./ColumnContainer";
+import { DndContext } from "@dnd-kit/core";
+import { SortableContext } from "@dnd-kit/sortable";
+
 
 const FlowBoard = () => {
   const [columns, setColumns] = useState<Column[]>([]);
+  const columnsId = useMemo(() => columns.map((col) => col.id), [columns])
 
   console.log(columns);
 
@@ -45,12 +49,15 @@ const FlowBoard = () => {
     overflow-y-hidden
     px-[40px]
     ">
+      <DndContext>
       <div className="flex gap-4 m-auto">
         {/* render colums here */}
         <div className="flex gap-2">
+          <SortableContext items={columnsId}>
           {columns.map((column) => (
             <div><ColumnContainer key={column.id} column={column} deleteColumn={deleteColumn}/></div>
           ))}
+          </SortableContext>
         </div>
         <button
         onClick={() => createNewColumn()}
@@ -75,6 +82,7 @@ const FlowBoard = () => {
             Add Column
         </button>
         </div>
+      </DndContext>
     </div>
   );
 
@@ -82,3 +90,4 @@ const FlowBoard = () => {
 };
 
 export default FlowBoard
+
