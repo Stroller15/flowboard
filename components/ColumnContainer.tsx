@@ -1,5 +1,7 @@
 import DeleteButton from "@/assets/DeleteButton";
 import { Column, Id } from "@/types";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   column: Column;
@@ -9,12 +11,41 @@ interface Props {
 const ColumnContainer = (props: Props) => {
   const { column, deleteColumn } = props;
 
-  const parts = column.title.split(" ");
-  const columnNumbers = parts[parts.length - 1];
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: column.id,
+    data: {
+      type: "Column",
+      column,
+    },
+  });
 
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
+
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className=" bg-buttonBackgroundColor w-[350px] h-[500px] max-h-[500px]
+        rounded-md flex flex-col ">
+      </div>
+    );
+  }
 
   return (
     <div
+      ref={setNodeRef}
+      style={style}
       className="
     bg-buttonBackgroundColor
     w-[350px]
@@ -27,6 +58,8 @@ const ColumnContainer = (props: Props) => {
     >
       {/* column title */}
       <div
+        {...attributes}
+        {...listeners}
         className="
         bg-neutral-900
         text-md
@@ -59,18 +92,18 @@ const ColumnContainer = (props: Props) => {
 
         "
           >
-            <div>{columnNumbers}</div>
+            0
           </div>
           {column.title}
         </div>
-        <button 
-        onClick={() => deleteColumn(column.id)}
-        
-        className="
+        <button
+          onClick={() => deleteColumn(column.id)}
+          className="
         stroke-gray-500
         hover:stroke-white
-        ">
-            <DeleteButton />
+        "
+        >
+          <DeleteButton />
         </button>
       </div>
 
