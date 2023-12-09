@@ -4,14 +4,16 @@ import PlusIcon from "@/assets/PlusIcon";
 import { useMemo, useState } from "react";
 import { Column, Id } from "@/types";
 import ColumnContainer from "./ColumnContainer";
-import { DndContext, DragOverlay, DragStartEvent } from "@dnd-kit/core";
-import { SortableContext } from "@dnd-kit/sortable";
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 
 const FlowBoard = () => {
   const [columns, setColumns] = useState<Column[]>([]);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+
+
 
   console.log(columns);
 
@@ -48,6 +50,38 @@ const FlowBoard = () => {
     }
   }
 
+  // OnDragEnd function
+
+  function onDragEnd(event: DragEndEvent) {
+    const {active, over} = event;
+    if(!over) return;
+
+    const activeColumnId = active.id;
+    const overColumnId = over.id;
+
+    if(activeColumnId === overColumnId) return;
+
+    setColumns((columns) => {
+      const activeColumnIndex = columns.findIndex(
+        (col) => col.id === activeColumnId
+      );
+      const overColumnIndex = columns.findIndex(
+        (col) => col.id === overColumnId
+      );
+
+      return arrayMove(columns, activeColumnIndex, overColumnIndex);
+    })
+  }
+
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    })
+  );
+
   return (
     <div
       className="
@@ -61,7 +95,7 @@ const FlowBoard = () => {
     px-[40px]
     "
     >
-      <DndContext onDragStart={onDragStart}>
+      <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
         <div className="flex gap-4 m-auto">
           {/* render colums here */}
           <div className="flex gap-2">

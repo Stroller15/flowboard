@@ -37,8 +37,10 @@ const ColumnContainer = (props: Props) => {
         ref={setNodeRef}
         style={style}
         className=" bg-buttonBackgroundColor w-[350px] h-[500px] max-h-[500px]
-        rounded-md flex flex-col ">
-      </div>
+        rounded-md flex flex-col opacity-40
+        border-2
+        border-rose-500"
+      ></div>
     );
   }
 
