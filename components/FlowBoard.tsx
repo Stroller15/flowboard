@@ -7,11 +7,15 @@ import ColumnContainer from "./ColumnContainer";
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
+import { Task } from "@/types";
+import { join } from "path";
 
 const FlowBoard = () => {
+
   const [columns, setColumns] = useState<Column[]>([]);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+  const [tasks, setTasks] = useState<Task[]>([])
 
 
 
@@ -48,6 +52,16 @@ const FlowBoard = () => {
       return {...col, title};
     });
     setColumns(newColumn);
+  }
+
+  //createTask
+  function createTask(columnId: Id) {
+    const newTask: Task = {
+      id: generateId(),
+      columnId,
+      content: `Task ${tasks.length + 1}`,
+    };
+    setTasks([...tasks, newTask]);
   }
 
   // onDragStart function
@@ -117,6 +131,11 @@ const FlowBoard = () => {
                     column={col}
                     deleteColumn={deleteColumn}
                     updateColumn={updateColumn}
+                    createTask={createTask}
+                    tasks = {tasks.filter((task) => (
+                      task.columnId === col.id)
+                    )}
+                    
                   />
                 </div>
               ))}
@@ -151,11 +170,15 @@ const FlowBoard = () => {
                 column={activeColumn}
                 deleteColumn={deleteColumn}
                 updateColumn={updateColumn}
+                createTask={createTask}
+                tasks={tasks.filter(
+                  (task) => task.columnId === activeColumn.id
+                )}
               />
             )}
           </DragOverlay>,
           document.body
-        )}
+        )}  
       </DndContext>
     </div>
   );
