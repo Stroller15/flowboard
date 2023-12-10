@@ -15,7 +15,7 @@ const FlowBoard = () => {
 
 
 
-  console.log(columns);
+  
 
   // Generated random id
   const generateId = () => {
@@ -39,6 +39,16 @@ const FlowBoard = () => {
     const filterColumn = columns.filter((col) => col.id !== id);
     setColumns(filterColumn);
   };
+
+  //UpdateColumn
+
+  function updateColumn(id: Id, title: string) {
+    const newColumn = columns.map((col) => {
+      if(col.id !== id) return col;
+      return {...col, title};
+    });
+    setColumns(newColumn);
+  }
 
   // onDragStart function
 
@@ -106,6 +116,7 @@ const FlowBoard = () => {
                     key={col.id}
                     column={col}
                     deleteColumn={deleteColumn}
+                    updateColumn={updateColumn}
                   />
                 </div>
               ))}
@@ -121,7 +132,7 @@ const FlowBoard = () => {
         rounded-lg
         bg-buttonBackgroundColor
         p-4
-        ring-amber-400
+        ring-fuchsia-600
         hover:ring-2
         flex
         gap-2
@@ -139,6 +150,7 @@ const FlowBoard = () => {
               <ColumnContainer
                 column={activeColumn}
                 deleteColumn={deleteColumn}
+                updateColumn={updateColumn}
               />
             )}
           </DragOverlay>,

@@ -12,6 +12,18 @@ body,
   background-color: #282C35;
 }
 
-.border-color {
-  
+/* Styles the main scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Styles the horizontal scrollbar */
+::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
+
+/* Styles the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: fuchsia; /* Change to your desired color */
+  border-radius: 4px; /* Adjust border radius as needed */
 }
