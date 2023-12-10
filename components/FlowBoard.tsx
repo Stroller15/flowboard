@@ -70,6 +70,15 @@ const FlowBoard = () => {
     setTasks(newTasks);
   }
 
+  //updateTask
+  function updateTask (id: Id, content: string) {
+    const newTasks = tasks.map((task) => {
+      if(task.id !== id) return task;
+      return {...task, content};
+    })
+    setTasks(newTasks);
+  }
+
   // onDragStart function
 
   function onDragStart(event: DragStartEvent) {
@@ -139,6 +148,7 @@ const FlowBoard = () => {
                     updateColumn={updateColumn}
                     createTask={createTask}
                     deleteTask={deleteTask}
+                    updateTask={updateTask}
                     tasks = {tasks.filter((task) => (
                       task.columnId === col.id)
                     )}
@@ -179,6 +189,7 @@ const FlowBoard = () => {
                 updateColumn={updateColumn}
                 createTask={createTask}
                 deleteTask={deleteTask}
+                updateTask={updateTask}
                 tasks={tasks.filter(
                   (task) => task.columnId === activeColumn.id
                 )}
