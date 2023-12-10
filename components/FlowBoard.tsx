@@ -8,7 +8,7 @@ import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, u
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { Task } from "@/types";
-import { join } from "path";
+
 
 const FlowBoard = () => {
 
@@ -62,6 +62,12 @@ const FlowBoard = () => {
       content: `Task ${tasks.length + 1}`,
     };
     setTasks([...tasks, newTask]);
+  }
+
+  //deleteTask
+  function deleteTask(id: Id) {
+    const newTasks = tasks.filter((task) => task.id !== id);
+    setTasks(newTasks);
   }
 
   // onDragStart function
@@ -132,6 +138,7 @@ const FlowBoard = () => {
                     deleteColumn={deleteColumn}
                     updateColumn={updateColumn}
                     createTask={createTask}
+                    deleteTask={deleteTask}
                     tasks = {tasks.filter((task) => (
                       task.columnId === col.id)
                     )}
@@ -171,6 +178,7 @@ const FlowBoard = () => {
                 deleteColumn={deleteColumn}
                 updateColumn={updateColumn}
                 createTask={createTask}
+                deleteTask={deleteTask}
                 tasks={tasks.filter(
                   (task) => task.columnId === activeColumn.id
                 )}
