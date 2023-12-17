@@ -276,7 +276,7 @@ const FlowBoard = () => {
           <div className="flex gap-2">
             <SortableContext items={columnsId}>
               {columns.map((col) => (
-                <div>
+                <div key={col.id}>
                   <ColumnContainer
                     key={col.id}
                     column={col}
